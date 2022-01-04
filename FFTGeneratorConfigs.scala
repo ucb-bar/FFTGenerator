@@ -1,4 +1,4 @@
-package FFTGenerator
+package fftgenerator
 
 import freechips.rocketchip.config.{Field, Parameters, Config}
 

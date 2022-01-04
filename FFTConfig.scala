@@ -1,4 +1,4 @@
-package FFTGenerator
+package fftgenerator
 
 import breeze.math.{Complex}
 import breeze.signal.{fourierTr}

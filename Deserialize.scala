@@ -1,6 +1,6 @@
 // Author: James Dunn, UC Berkeley (dunn@eecs.berkeley.edu)
 
-package FFTGenerator
+package fftgenerator
 
 import chisel3._
 import chisel3.experimental.FixedPoint

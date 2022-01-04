@@ -34,7 +34,7 @@ Notes from 10/29:
     - diplomatic section is going to be the TLRegisterNode (this specifies the base memory address and connects it to main mem -- example: https://github.com/ucberkeley-ee290c/fa18-gps/blob/50189c74f92dddaf88ba9a8ac322d4e21f140746/src/main/scala/gps/FFT/WriteQueueBlock.scala#L110)
 */
 
-package FFTGenerator
+package fftgenerator
 
 import chisel3._
 import chisel3.experimental.FixedPoint
@@ -215,7 +215,7 @@ class LazyTail(val config: FixedTailParams)(implicit p: Parameters) extends Lazy
 // todo: make regmpa outputRegX parameterizable
 
 // animesh: the trait is called a mixin
-trait HasPeripheryFFT extends BaseSubsystem { // animesh: you added this
+trait CanHavePeripheryFFT extends BaseSubsystem { // animesh: you added this
   if (!p(FFTEnableKey).isEmpty) { // animesh: p is of type parameters (set by BaseSubsytem) todo: find where p is set
     // instantiate tail chain
     val config = p(FFTEnableKey).get.copy(n = p(FFTNumPoints), lanes = p(FFTNumPoints)) // todo ask abe: is there a better way of doing this (since we're optioning the enable) -- could bundle it directly into enable

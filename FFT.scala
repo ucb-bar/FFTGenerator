@@ -2,7 +2,7 @@
 
 // Author: Stevo Bailey (stevo.bailey@berkeley.edu)
 
-package FFTGenerator
+package fftgenerator
 
 import chisel3.util._
 import chisel3._
