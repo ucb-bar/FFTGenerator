@@ -42,26 +42,26 @@ import dsptools._
   */
 
 /**
-	* Base class for Unscramble parameters.
-	* These are type-generic.
-	*/
+  * Base class for Unscramble parameters.
+  * These are type-generic.
+  */
 
 trait UnscrambleParams[T <: Data] {
-	// Datatype of input and output samples
-	val protoIn, protoOut: DspComplex[T]
-	// Deserialization factor
-	val lanes: Int
+  // Datatype of input and output samples
+  val protoIn, protoOut: DspComplex[T]
+  // Deserialization factor
+  val lanes: Int
 }
 
 /**
-	* Unscramble parameters for fixed-point implementation.
-	*/
+  * Unscramble parameters for fixed-point implementation.
+  */
 case class FixedUnscrambleParams(
-	IOWidth: Int,
-	binaryPoint: Int,
-	lanes: Int,
+  IOWidth: Int,
+  binaryPoint: Int,
+  lanes: Int,
 ) extends UnscrambleParams[FixedPoint] {
-	  val protoIn, protoOut= DspComplex(FixedPoint(IOWidth.W, binaryPoint.BP),FixedPoint(IOWidth.W, binaryPoint.BP))
+    val protoIn, protoOut= DspComplex(FixedPoint(IOWidth.W, binaryPoint.BP),FixedPoint(IOWidth.W, binaryPoint.BP))
 }
 
 /**
@@ -82,8 +82,8 @@ object UnscrambleIO {
 }
 
 /**
-	* Here is the Unscrambler itself.
-	*/
+  * Here is the Unscrambler itself.
+  */
 class Unscramble[T <: Data](val params: UnscrambleParams[T]) extends Module {
 
   val io = IO(UnscrambleIO(params))

@@ -24,29 +24,28 @@ import scala.math.sqrt
   */
 
 /**
-	* Base class for Deserialize parameters.
-	* These are type-generic.
-	*/
-
+  * Base class for Deserialize parameters.
+  * These are type-generic.
+  */
 trait DeserializeParams[T <: Data] {
-	// Datatype of input and output samples
-	val protoInDes, protoOutDes: DspComplex[T]
-	// Deserialization factor
-	val lanes: Int
+  // Datatype of input and output samples
+  val protoInDes, protoOutDes: DspComplex[T]
+  // Deserialization factor
+  val lanes: Int
   // Number of subcarriers
   val S: Int
 }
 
 /**
-	* Deserialize parameters for fixed-point implementation.
-	*/
+  * Deserialize parameters for fixed-point implementation.
+  */
 case class FixedDeserializeParams(
   IOWidth: Int,
   binaryPoint: Int,
   lanes: Int,
   S: Int,
 ) extends DeserializeParams[FixedPoint] {
-	  val protoInDes = DspComplex(FixedPoint(IOWidth.W, (binaryPoint-3).BP),FixedPoint(IOWidth.W, (binaryPoint-3).BP))
+    val protoInDes = DspComplex(FixedPoint(IOWidth.W, (binaryPoint-3).BP),FixedPoint(IOWidth.W, (binaryPoint-3).BP))
     val protoOutDes = DspComplex(FixedPoint(IOWidth.W, binaryPoint.BP),FixedPoint(IOWidth.W, binaryPoint.BP))
 }
 
@@ -69,8 +68,8 @@ object DeserializeIO {
 }
 
 /**
-	* Here is the Deserializer itself.
-	*/
+  * Here is the Deserializer itself.
+  */
   // todo ask abe/yue: why are protoIn and protoOut different? Arbitrarily shifts bits
 class Deserialize[T <: Data : Real](val params: DeserializeParams[T]) extends Module {
 
