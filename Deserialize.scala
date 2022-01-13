@@ -92,8 +92,8 @@ class Deserialize[T <: Data : Real](val params: DeserializeParams[T]) extends Mo
   scale.imag := ConvertableTo[T].fromDouble(0.0)
 
   // Enumerate FSM states
-  val COUNTING = 2.U(3.W)
-  val DONE = 4.U(3.W)
+  val COUNTING = 0.U(2.W)
+  val DONE = 1.U(2.W)
 
   // State machine
   val state = RegInit(COUNTING)
