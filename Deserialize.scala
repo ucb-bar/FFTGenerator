@@ -70,7 +70,6 @@ object DeserializeIO {
 /**
   * Here is the Deserializer itself.
   */
-  // todo ask abe/yue: why are protoIn and protoOut different? Arbitrarily shifts bits
 class Deserialize[T <: Data : Real](val params: DeserializeParams[T]) extends Module {
 
   val io = IO(DeserializeIO(params))
@@ -93,9 +92,7 @@ class Deserialize[T <: Data : Real](val params: DeserializeParams[T]) extends Mo
   scale.imag := ConvertableTo[T].fromDouble(0.0)
 
   // Enumerate FSM states
-  // val INIT = 0.U(3.W)
   val COUNTING = 2.U(3.W)
-  // val SUFFIX = 3.U(3.W)
   val DONE = 4.U(3.W)
 
   // State machine
@@ -104,7 +101,6 @@ class Deserialize[T <: Data : Real](val params: DeserializeParams[T]) extends Mo
   io.in.ready := state === COUNTING
   io.out.valid := state === DONE
 
-  // TODO: HOW DO WE RESET THE FSM?
   switch (state) {
     is (COUNTING) {
       when(nCounter === params.lanes.U) {
@@ -117,7 +113,6 @@ class Deserialize[T <: Data : Real](val params: DeserializeParams[T]) extends Mo
         }
       }
     }
-
     is (DONE) {
       // reset for next use
       nCounter := 0.U
@@ -125,46 +120,4 @@ class Deserialize[T <: Data : Real](val params: DeserializeParams[T]) extends Mo
     }
   }
 
-  // when (state === INIT) {
-  //   io.in.ready := true.B
-  //   io.out.valid := false.B
-  //   when (io.in.valid) {
-  //     state := COUNTING
-  //   }.otherwise {
-  //     state := INIT
-  //   }
-  // }.elsewhen (state === COUNTING) {
-  //   io.in.ready := true.B
-  //   io.out.valid := false.B
-  //     when (io.in.valid) {
-  //       when (nCounter < (params.lanes - 1.U)) {
-  //         serializedBits(nCounter) := io.in.bits * scale
-  //         nCounter := nCounter + 1.U
-  //         state := COUNTING
-  //       }.otherwise {
-  //         // TODO ASK ABE: KINDA HACKY... IS THIS A SYNCHRONOUS BLOCK? how do i formulate the fsm here
-  //         // THIS IS A HACK TO FIX SCALING
-  //         serializedBits(nCounter) := io.in.bits * scale
-  //         state := SUFFIX
-  //         nCounter := 0.U
-  //       }
-  //     }.elsewhen(nCounter === (params.lanes - 1.U)) {
-  //       state := SUFFIX
-  //     }.otherwise {
-  //       state := COUNTING
-  //     }
-  // }.elsewhen (state === SUFFIX) {
-  //   io.in.ready := true.B
-  //   io.out.valid := true.B
-  //   state := DONE
-  // }.elsewhen (state === DONE) { // todo: reset state
-  //   io.in.ready := false.B
-  //   io.out.valid := false.B
-  //   state := DONE
-  // }.otherwise { // Bad state
-  //   io.in.ready := false.B
-  //   io.out.valid := false.B
-  //   state := INIT
-  //   nCounter := 0.U
-  // }
 }

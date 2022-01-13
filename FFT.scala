@@ -43,10 +43,7 @@ class DirectFFT[T<:Data:Real](params: FFTConfig[T], genMid: DspComplex[T], genTw
   // wire up twiddles
   val genTwiddleReal = genTwiddle.real
   val genTwiddleImag = genTwiddle.imag
-  // This should work and would simplify the firrtl, but... it doesn't seem to work
-  //val twiddle_rom = Vec(params.twiddle.map(x =>
-  //  DspComplex(genTwiddleReal.fromDoubleWithFixedWidth(x(0)), genTwiddleImag.fromDoubleWithFixedWidth(x(1)))
-  //))
+
   val twiddle_rom = VecInit(params.twiddle.map( x => {
     val real = Wire(genTwiddleReal.cloneType)
     val imag = Wire(genTwiddleImag.cloneType)
@@ -58,7 +55,7 @@ class DirectFFT[T<:Data:Real](params: FFTConfig[T], genMid: DspComplex[T], genTw
     twiddle
   }))
   val indices_rom = VecInit(params.dindices.map(x => x.U))
-  // TODO: make this not a multiply
+
   val start = sync*(params.lanes-1).U
   val twiddle = Wire(Vec(params.lanes-1, genTwiddle.cloneType))
   // special case when n = 4, because the pattern breaks down
@@ -226,9 +223,6 @@ class FFTIO[T<:Data:Real](lanes: Int, genIn: DspComplex[T], genOut: DspComplex[T
   val in = Input(ValidWithSync(Vec(lanes, genIn)))
   val out = Output(ValidWithSync(Vec(lanes, genOut)))
 
-  // val data_set_end_status = Output(Bool())
-  // val data_set_end_clear = Input(Bool())
-
   override def cloneType = new FFTIO(lanes, genIn, genOut).asInstanceOf[this.type]
 
 }
@@ -343,16 +337,6 @@ class FFT[T<:Data:Real](val params: FFTConfig[T]) extends Module {
   }
   in.valid := io.in.valid
   in.sync := io.in.sync
-
-  // data set end flag
-  // val valid_delay = RegNext(io.out.valid)
-  // val dses = RegInit(false.B)
-  // when (io.data_set_end_clear) {
-  //   dses := false.B
-  // } .elsewhen (valid_delay & ~io.out.valid) {
-  //   dses := true.B
-  // }
-  // io.data_set_end_status := dses
 
   // instantiate sub-FFTs
   val direct = Module(new DirectFFT[T](
