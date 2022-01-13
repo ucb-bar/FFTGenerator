@@ -2,7 +2,6 @@
 // Copyright (c) 2021-2022, The Regents of the University of California (Regents).
 // All Rights Reserved. See LICENSE for license details.
 //------------------------------------------------------------------------------
-// Author: James Dunn, UC Berkeley (dunn@eecs.berkeley.edu)
 
 /**
   * - Tail.scala is the top of the system

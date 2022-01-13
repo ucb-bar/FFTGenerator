@@ -2,7 +2,6 @@
 // Copyright (c) 2021-2022, The Regents of the University of California (Regents).
 // All Rights Reserved. See LICENSE for license details.
 //------------------------------------------------------------------------------
-// Author: Stevo Bailey (stevo.bailey@berkeley.edu)
 
 package fftgenerator
 
