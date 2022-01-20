@@ -47,12 +47,13 @@ trait TailParams[T <: Data] extends DeserializeParams[T] with FFTConfig[T] with 
 }
 
 case class FixedTailParams(
-    IOWidth: Int = 16,
+    IOWidth: Int = 16,          //
     binaryPoint: Int = 8,
     lanes: Int = 2,
     n: Int = 2,
     S: Int = 256,
     pipelineDepth: Int = 0,
+    baseAddress: Int = 0x2000,
 ) extends TailParams[FixedPoint] {
     val proto = DspComplex(FixedPoint(IOWidth.W, binaryPoint.BP),FixedPoint(IOWidth.W, binaryPoint.BP))
     val protoIn = DspComplex(FixedPoint(IOWidth.W, binaryPoint.BP),FixedPoint(IOWidth.W, binaryPoint.BP))
@@ -116,7 +117,7 @@ class Tail[T <: Data : RealBits : BinaryRepresentation : Real](val params: TailP
 class LazyTail(val config: FixedTailParams)(implicit p: Parameters) extends LazyModule {
   val device = new SimpleDevice("fft-generator", Seq("cpu")) // add an entry to the DeviceTree in the BootROM so that it can be read by a Linux driver (9.2 chipyard docs)
   val node = TLRegisterNode(
-    address = Seq(AddressSet(p(FFTBaseAddrKey), 0xff)), // (base address + size) of regmap
+    address = Seq(AddressSet(config.baseAddress, 0xff)), // (base address + size) of regmap
     device = device,
     beatBytes = 8, // specifies interface width in bytes -- since we're connected to a 64bit bus, want an 8byte width (default is 4)
     concurrency = 1 // size of the internal queue for TileLink requests, must be >0 for decoupled requests and responses (9.4 chipyard docs)
@@ -154,8 +155,7 @@ class LazyTail(val config: FixedTailParams)(implicit p: Parameters) extends Lazy
 trait CanHavePeripheryFFT extends BaseSubsystem {
   if (!p(FFTEnableKey).isEmpty) {
     // instantiate tail chain
-    val config = p(FFTEnableKey).get.copy(n = p(FFTNumPoints), lanes = p(FFTNumPoints)) // todo ask abe: is there a better way of doing this (since we're optioning the enable) -- could bundle it directly into enable
-    val tailChain = LazyModule(new LazyTail(config))
+    val tailChain = LazyModule(new LazyTail(p(FFTEnableKey).get))
     // connect memory interfaces to pbus
     pbus.toVariableWidthSlave(Some("tailWrite")) { tailChain.node }
   }

@@ -13,15 +13,10 @@ class WithFFTGenerator (enable: Boolean = true) extends Config((site, here, up) 
   case FFTEnableKey => Some(FixedTailParams())
 })
 
-// parameter to set FFT mmio registers base address
-case object FFTBaseAddrKey extends Field[Int](0x2000)
-
-class WithFFTBaseAddr (baseAddress: Int) extends Config((site, here, up) => {
-  case FFTBaseAddrKey => baseAddress
+class WithFFTBaseAddr (baseAddr: Int) extends Config((site, here, up) => {
+  case FFTEnableKey => Some(up(FFTEnableKey, site).get.copy(baseAddress = baseAddr))
 })
 
-case object FFTNumPoints extends Field[Int](2)
-
 class WithFFTNumPoints (numPoints: Int) extends Config((site, here, up) => {
-  case FFTNumPoints => numPoints
+  case FFTEnableKey => Some(up(FFTEnableKey, site).get.copy(n = numPoints, lanes = numPoints))
 })
