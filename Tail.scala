@@ -49,12 +49,11 @@ trait TailParams[T <: Data] extends DeserializeParams[T] with FFTConfig[T] with 
 case class FixedTailParams(
     IOWidth: Int = 16,
     binaryPoint: Int = 8,
-    lanes: Int = 2, // todo ask yue: why are N and lanes different? -- can remove N, only lanes is used by provided code
+    lanes: Int = 2,
     n: Int = 2,
     S: Int = 256,
     pipelineDepth: Int = 0,
 ) extends TailParams[FixedPoint] {
-    // todo ask yue: can we make protoIn and protoOutDes the same? Why are they different? -- can change in and out to be the same
     val proto = DspComplex(FixedPoint(IOWidth.W, binaryPoint.BP),FixedPoint(IOWidth.W, binaryPoint.BP))
     val protoIn = DspComplex(FixedPoint(IOWidth.W, binaryPoint.BP),FixedPoint(IOWidth.W, binaryPoint.BP))
     val protoOut = DspComplex(FixedPoint(IOWidth.W, binaryPoint.BP),FixedPoint(IOWidth.W, binaryPoint.BP))
@@ -131,7 +130,7 @@ class LazyTail(val config: FixedTailParams)(implicit p: Parameters) extends Lazy
     tail.io.signalIn.bits := inputWire.bits.asTypeOf(config.protoIn)
     tail.io.signalIn.valid := inputWire.valid
 
-    var outputRegs = new ListBuffer[chisel3.UInt]() // todo ask abe: Is this the right type annotation?? Is it UInt or Regsmth
+    var outputRegs = new ListBuffer[chisel3.UInt]()
     for (i <- 0 until config.n) {
       outputRegs += RegEnable(tail.io.signalOut.bits(i).asUInt(), 0.U, tail.io.signalOut.valid)
     }
@@ -143,7 +142,7 @@ class LazyTail(val config: FixedTailParams)(implicit p: Parameters) extends Lazy
       regMap += (0x00 + (i+1) * 8 -> Seq(RegField.r(config.IOWidth * 2, outputRegs(i))))
     }
 
-    tail.io.signalOut.ready := true.B // todo ask abe: gotta be a better way to drive this
+    tail.io.signalOut.ready := true.B
 
     node.regmap(
       (regMap.toList):_*
