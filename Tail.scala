@@ -47,7 +47,7 @@ trait TailParams[T <: Data] extends DeserializeParams[T] with FFTConfig[T] with 
 }
 
 case class FixedTailParams(
-    IOWidth: Int = 16,          //
+    IOWidth: Int = 16,
     binaryPoint: Int = 8,
     lanes: Int = 2,
     n: Int = 2,

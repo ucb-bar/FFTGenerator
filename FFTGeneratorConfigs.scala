@@ -6,17 +6,13 @@ package fftgenerator
 
 import freechips.rocketchip.config.{Field, Parameters, Config}
 
-//cparameter to enable FFT
+//parameter to enable FFT
 case object FFTEnableKey extends Field[Option[FixedTailParams]](None)
 
-class WithFFTGenerator (enable: Boolean = true) extends Config((site, here, up) => {
-  case FFTEnableKey => Some(FixedTailParams())
-})
-
-class WithFFTBaseAddr (baseAddr: Int) extends Config((site, here, up) => {
-  case FFTEnableKey => Some(up(FFTEnableKey, site).get.copy(baseAddress = baseAddr))
-})
-
-class WithFFTNumPoints (numPoints: Int) extends Config((site, here, up) => {
-  case FFTEnableKey => Some(up(FFTEnableKey, site).get.copy(n = numPoints, lanes = numPoints))
+// baseAddr: Base address of FFT generator (location of FFT write lane).
+//    Read lane i will be located at baseAddr + 64bits (assuming 64bit system) + (i * 8)
+//    0x2000 picked as default since (at time of creation) no other chipyard components conflict with it
+// numPoints: number of points the FFT will take in.
+class WithFFTGenerator (baseAddr: Int = 0x2000, numPoints: Int) extends Config((site, here, up) => {
+  case FFTEnableKey => Some(FixedTailParams(baseAddress = baseAddr, n = numPoints, lanes = numPoints))
 })
