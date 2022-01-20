@@ -1,4 +1,11 @@
-# Generates test points for FFT
+#!/usr/bin/env python3
+"""
+Generates test points for FFT
+pip dependencies:
+numpy==1.13.3
+numfi==0.2.4
+"""
+
 import cmath
 from cmath import e, pi
 from numpy import fft
