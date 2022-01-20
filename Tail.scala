@@ -52,7 +52,7 @@ case class FixedTailParams(
     lanes: Int = 2,
     n: Int = 2,
     S: Int = 256,
-    pipelineDepth: Int = 0,
+    pipelineDepth: Int = 0, // not configurable since this is an mmio device and not on-pipeline
     baseAddress: Int = 0x2000,
 ) extends TailParams[FixedPoint] {
     val proto = DspComplex(FixedPoint(IOWidth.W, binaryPoint.BP),FixedPoint(IOWidth.W, binaryPoint.BP))
@@ -131,10 +131,7 @@ class LazyTail(val config: FixedTailParams)(implicit p: Parameters) extends Lazy
     tail.io.signalIn.bits := inputWire.bits.asTypeOf(config.protoIn)
     tail.io.signalIn.valid := inputWire.valid
 
-    var outputRegs = new ListBuffer[chisel3.UInt]()
-    for (i <- 0 until config.n) {
-      outputRegs += RegEnable(tail.io.signalOut.bits(i).asUInt(), 0.U, tail.io.signalOut.valid)
-    }
+    val outputRegs = tail.io.signalOut.bits.map(b => RegEnable(b.asUInt(), 0.U, tail.io.signalOut.valid))
 
     var regMap = new ListBuffer[(Int, Seq[freechips.rocketchip.regmapper.RegField])]()
     regMap += (0x00 -> Seq(RegField.w(config.IOWidth * 2, inputWire)))
@@ -145,9 +142,7 @@ class LazyTail(val config: FixedTailParams)(implicit p: Parameters) extends Lazy
 
     tail.io.signalOut.ready := true.B
 
-    node.regmap(
-      (regMap.toList):_*
-    )
+    node.regmap((regMap.toList):_*)
   }
 
 }
