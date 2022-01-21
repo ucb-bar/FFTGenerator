@@ -4,16 +4,11 @@
 //------------------------------------------------------------------------------
 package fftgenerator
 import chisel3._
-import chisel3.experimental._
-import chisel3.util._
-import dsptools.numbers.implicits._
+import chisel3.experimental.{FixedPoint}
+import chisel3.util.{log2Ceil}
 import dsptools.numbers.{DspComplex, Real}
 import scala.util.Random
 import scala.math._
-import dspjunctions._
-import dspblocks._
-
-import freechips.rocketchip.config._
 
 import scala.collection.mutable.Map
 
