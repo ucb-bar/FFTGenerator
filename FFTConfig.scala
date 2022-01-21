@@ -3,29 +3,15 @@
 // All Rights Reserved. See LICENSE for license details.
 //------------------------------------------------------------------------------
 package fftgenerator
-
-import breeze.math.{Complex}
-import breeze.signal.{fourierTr}
-import breeze.linalg._
 import chisel3._
 import chisel3.experimental._
 import chisel3.util._
-import chisel3.internal.firrtl.KnownBinaryPoint
-import chisel3.iotesters._
-import firrtl_interpreter.InterpreterOptions
-import dsptools.numbers.{DspReal, SIntOrder, SIntRing}
-import dsptools.{DspContext, DspTester, Grow}
 import dsptools.numbers.implicits._
 import dsptools.numbers.{DspComplex, Real}
 import scala.util.Random
 import scala.math._
 import dspjunctions._
 import dspblocks._
-
-import craft._
-import dsptools._
-import dsptools.numbers.{Field=>_,_}
-import dsptools.numbers.implicits._
 
 import freechips.rocketchip.config._
 
