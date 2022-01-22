@@ -14,13 +14,6 @@ import dsptools.numbers._
 import freechips.rocketchip.diplomacy.LazyModule
 import freechips.rocketchip.subsystem.BaseSubsystem
 
-import breeze.math.{Complex}
-import breeze.signal.{fourierTr}
-import breeze.linalg._
-import dsptools.numbers.{DspReal, SIntOrder, SIntRing}
-import dsptools.{DspContext, DspTester, Grow}
-import chisel3.iotesters.{PeekPokeTester, TesterOptionsManager}
-
 // comment when using FixedPoint, uncomment for DspReal
 // import dsptools.numbers.implicits._
 
@@ -30,7 +23,7 @@ import scala.math.{pow, abs, round}
 
 import dspblocks._
 
-import craft._
+
 import dsptools._
 
 /**
