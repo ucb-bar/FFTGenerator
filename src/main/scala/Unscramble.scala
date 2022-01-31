@@ -65,8 +65,6 @@ class UnscrambleIO[T <: Data](params: UnscrambleParams[T]) extends Bundle {
   // Unscrambled output (parallel vector)
   // Change this to Decoupled later
   val out = Decoupled((Vec(params.lanes, params.protoOut.cloneType)))
-
-  override def cloneType: this.type = UnscrambleIO(params).asInstanceOf[this.type]
 }
 object UnscrambleIO {
   def apply[T <: Data](params: UnscrambleParams[T]): UnscrambleIO[T] =

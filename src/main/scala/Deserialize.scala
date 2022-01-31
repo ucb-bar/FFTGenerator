@@ -58,8 +58,6 @@ class DeserializeIO[T <: Data](params: DeserializeParams[T]) extends Bundle {
 
   // Deserialized output (parallel vector)
   val out = Output(ValidWithSync(Vec(params.lanes, params.protoOutDes.cloneType)))
-
-  override def cloneType: this.type = DeserializeIO(params).asInstanceOf[this.type]
 }
 object DeserializeIO {
   def apply[T <: Data](params: DeserializeParams[T]): DeserializeIO[T] =
