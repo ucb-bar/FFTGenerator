@@ -221,9 +221,6 @@ class FFTIO[T<:Data:Real](lanes: Int, genIn: DspComplex[T], genOut: DspComplex[T
 
   val in = Input(ValidWithSync(Vec(lanes, genIn)))
   val out = Output(ValidWithSync(Vec(lanes, genOut)))
-
-  override def cloneType = new FFTIO(lanes, genIn, genOut).asInstanceOf[this.type]
-
 }
 
 /**

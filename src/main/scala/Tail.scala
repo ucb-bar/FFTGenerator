@@ -73,8 +73,6 @@ class TailIO[T <: Data](params: TailParams[T]) extends Bundle {
   // Outputs
   // -- Signal Output
   val signalOut = Decoupled((Vec(params.lanes, params.protoOut.cloneType)))
-
-  override def cloneType: this.type = TailIO(params).asInstanceOf[this.type]
 }
 
 object TailIO {
