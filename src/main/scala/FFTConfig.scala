@@ -50,7 +50,7 @@ trait FFTConfig[T <: Data] {
   val pipe = (0 until log2Ceil(n)).map(x => floor(pipelineDepth/log2Ceil(n)).toInt + {if (stages_to_pipeline contains (x+1)) 1 else 0})
   val direct_pipe = pipe.drop(log2Ceil(bp)).foldLeft(0)(_+_)
   val biplex_pipe = pipe.dropRight(log2Ceil(lanes)).foldLeft(0)(_+_)
-  println("Pipeline registers inserted on stages: " + pipe.toArray.deep.mkString(","))
+  println("Pipeline registers inserted on stages: " + pipe.toArray.mkString(","))
   println(s"Total biplex pipeline depth: $biplex_pipe")
   println(s"Total direct pipeline depth: $direct_pipe")
 
