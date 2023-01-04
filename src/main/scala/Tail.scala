@@ -128,7 +128,7 @@ class LazyTail(val config: FixedTailParams)(implicit p: Parameters) extends Lazy
     tail.io.signalIn.bits := inputWire.bits.asTypeOf(config.protoIn)
     tail.io.signalIn.valid := inputWire.valid
 
-    val outputRegs = tail.io.signalOut.bits.map(b => RegEnable(b.asUInt(), 0.U, tail.io.signalOut.valid))
+    val outputRegs = tail.io.signalOut.bits.map(b => RegEnable(b.asUInt, 0.U, tail.io.signalOut.valid))
 
     var regMap = new ListBuffer[(Int, Seq[freechips.rocketchip.regmapper.RegField])]()
     regMap += (0x00 -> Seq(RegField.w(config.IOWidth * 2, inputWire)))
