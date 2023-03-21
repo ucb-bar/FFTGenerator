@@ -22,7 +22,7 @@ import freechips.rocketchip.subsystem.BaseSubsystem
 
 import freechips.rocketchip.regmapper._
 import freechips.rocketchip.tilelink.TLRegisterNode
-import freechips.rocketchip.config.Parameters
+import org.chipsalliance.cde.config.Parameters
 import freechips.rocketchip.diplomacy._
 
 import chisel3.experimental._
