@@ -4,7 +4,7 @@
 //------------------------------------------------------------------------------
 package fftgenerator
 
-import freechips.rocketchip.config.{Field, Parameters, Config}
+import org.chipsalliance.cde.config.{Field, Parameters, Config}
 
 //parameter to enable FFT
 case object FFTEnableKey extends Field[Option[FixedTailParams]](None)
