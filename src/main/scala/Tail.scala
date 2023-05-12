@@ -21,7 +21,7 @@ import freechips.rocketchip.diplomacy.LazyModule
 import freechips.rocketchip.subsystem.BaseSubsystem
 
 import freechips.rocketchip.regmapper._
-import freechips.rocketchip.tilelink.TLRegisterNode
+import freechips.rocketchip.tilelink.{TLRegisterNode, TLFragmenter}
 import org.chipsalliance.cde.config.Parameters
 import freechips.rocketchip.diplomacy._
 
@@ -149,6 +149,6 @@ trait CanHavePeripheryFFT extends BaseSubsystem {
     // instantiate tail chain
     val tailChain = LazyModule(new LazyTail(p(FFTEnableKey).get))
     // connect memory interfaces to pbus
-    pbus.toVariableWidthSlave(Some("tailWrite")) { tailChain.node }
+    pbus.coupleTo("tailWrite") { tailChain.node := TLFragmenter(pbus.beatBytes, pbus.blockBytes) := _ }
   }
 }
