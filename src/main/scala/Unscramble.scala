@@ -6,7 +6,6 @@
 package fftgenerator
 
 import chisel3._
-import chisel3.experimental.FixedPoint
 import chisel3.util.Decoupled
 import chisel3.util._
 import dspjunctions._
@@ -22,9 +21,10 @@ import scala.util.Random
 import scala.math.{pow, abs, round}
 
 import dspblocks._
-
-
 import dsptools._
+import fixedpoint._
+import fixedpoint.{fromIntToBinaryPoint}
+
 
 /**
   * This block performs an unscrambling of the direct-form FFT outputs. For

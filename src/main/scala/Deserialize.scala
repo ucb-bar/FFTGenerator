@@ -6,7 +6,6 @@
 package fftgenerator
 
 import chisel3._
-import chisel3.experimental.FixedPoint
 import chisel3.util.Decoupled
 import chisel3.util._
 import dspjunctions._
@@ -14,6 +13,8 @@ import dsptools.numbers._
 import freechips.rocketchip.diplomacy.LazyModule
 import freechips.rocketchip.subsystem.BaseSubsystem
 import scala.math.sqrt
+import fixedpoint._
+import fixedpoint.{fromIntToBinaryPoint}
 
 /**
   * This block performs a deserialization. It takes time-series inputs on a
@@ -82,11 +83,6 @@ class Deserialize[T <: Data : Real](val params: DeserializeParams[T]) extends Mo
 
   // nCounter keeps track of how far along in the serialization we are
   val nCounter = RegInit(0.U((log2Ceil(params.lanes) + 1).W))
-
-  // THIS IS A HACK TO FIX SCALING
-  val scale = Wire(params.protoOutDes.cloneType)
-  scale.real := ConvertableTo[T].fromDouble(1.0/params.S)
-  scale.imag := ConvertableTo[T].fromDouble(0.0)
 
   // Enumerate FSM states
   val COUNTING = 0.U(2.W)

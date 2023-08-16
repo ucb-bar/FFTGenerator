@@ -4,12 +4,12 @@
 //------------------------------------------------------------------------------
 package fftgenerator
 import chisel3._
-import chisel3.experimental.{FixedPoint}
 import chisel3.util.{log2Ceil}
+import fixedpoint._
+import fixedpoint.{fromIntToBinaryPoint}
 import dsptools.numbers.{DspComplex, Real}
 import scala.util.Random
 import scala.math._
-
 import scala.collection.mutable.Map
 
 /**
