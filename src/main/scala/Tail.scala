@@ -13,21 +13,15 @@
 package fftgenerator
 
 import chisel3._
-import chisel3.experimental.FixedPoint
 import chisel3.util._
-import chisel3.util.{Decoupled, Counter}
 import dsptools.numbers._
-import freechips.rocketchip.diplomacy.LazyModule
 import freechips.rocketchip.subsystem.BaseSubsystem
-
 import freechips.rocketchip.regmapper._
 import freechips.rocketchip.tilelink.{TLRegisterNode, TLFragmenter}
 import org.chipsalliance.cde.config.Parameters
 import freechips.rocketchip.diplomacy._
 
-import chisel3.experimental._
 import chisel3.ExplicitCompileOptions
-import chisel3.internal.firrtl.KnownBinaryPoint
 import craft._
 import dsptools._
 import dsptools.numbers.implicits._
@@ -36,6 +30,9 @@ import dspblocks._
 import scala.math._
 import scala.math.sqrt
 import scala.collection.mutable.ListBuffer
+import fixedpoint._
+import fixedpoint.{fromIntToBinaryPoint}
+
 
 trait TailParams[T <: Data] extends DeserializeParams[T] with FFTConfig[T] with UnscrambleParams[T] {
   // Number of lanes in FFT. Should be same as N.

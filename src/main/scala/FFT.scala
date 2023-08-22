@@ -7,9 +7,7 @@ package fftgenerator
 
 import chisel3.util._
 import chisel3._
-import chisel3.experimental._
 import chisel3.ExplicitCompileOptions
-import chisel3.internal.firrtl.KnownBinaryPoint
 import craft._
 import dsptools._
 import dsptools.numbers._
@@ -17,7 +15,8 @@ import dsptools.numbers.implicits._
 import dspjunctions._
 import dspblocks._
 import scala.math._
-
+import fixedpoint._
+import fixedpoint.{fromIntToBinaryPoint}
 
 class DirectFFTIO[T<:Data:Real](genMid: DspComplex[T], genOut: DspComplex[T], lanes: Int) extends Bundle {
   val in = Input(ValidWithSync(Vec(lanes, genMid)))
