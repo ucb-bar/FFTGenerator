@@ -7,7 +7,6 @@ package fftgenerator
 
 import chisel3.util._
 import chisel3._
-import chisel3.ExplicitCompileOptions
 import craft._
 import dsptools._
 import dsptools.numbers._
