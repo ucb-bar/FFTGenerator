@@ -143,8 +143,9 @@ class LazyTail(val config: FixedTailParams)(implicit p: Parameters) extends Lazy
 trait CanHavePeripheryFFT extends BaseSubsystem {
   if (!p(FFTEnableKey).isEmpty) {
     // instantiate tail chain
-    val tailChain = LazyModule(new LazyTail(p(FFTEnableKey).get))
+    val domain = pbus.generateSynchronousDomain.suggestName("fft_domain")
+    val tailChain = domain { LazyModule(new LazyTail(p(FFTEnableKey).get)) }
     // connect memory interfaces to pbus
-    pbus.coupleTo("tailWrite") { tailChain.node := TLFragmenter(pbus.beatBytes, pbus.blockBytes) := _ }
+    pbus.coupleTo("tailWrite") { domain { tailChain.node := TLFragmenter(pbus.beatBytes, pbus.blockBytes) } := _ }
   }
 }
