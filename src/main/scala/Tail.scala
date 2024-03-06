@@ -110,8 +110,11 @@ class Tail[T <: Data : RealBits : BinaryRepresentation : Real](val params: TailP
 
 class LazyTail(val config: FixedTailParams)(implicit p: Parameters) extends LazyModule {
   val device = new SimpleDevice("fft-generator", Seq("cpu")) // add an entry to the DeviceTree in the BootROM so that it can be read by a Linux driver (9.2 chipyard docs)
+
+  val numRegs = 2 + config.n
+  val regMapSize = (BigInt(1) << (log2Ceil(numRegs) + 3)) - 1
   val node = TLRegisterNode(
-    address = Seq(AddressSet(config.baseAddress, 0xff)), // (base address + size) of regmap
+    address = Seq(AddressSet(config.baseAddress, regMapSize)), // (base address + size) of regmap
     device = device,
     beatBytes = 8, // specifies interface width in bytes -- since we're connected to a 64bit bus, want an 8byte width (default is 4)
     concurrency = 1 // size of the internal queue for TileLink requests, must be >0 for decoupled requests and responses (9.4 chipyard docs)
