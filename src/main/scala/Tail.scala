@@ -15,7 +15,7 @@ package fftgenerator
 import chisel3._
 import chisel3.util._
 import dsptools.numbers._
-import freechips.rocketchip.subsystem.BaseSubsystem
+import freechips.rocketchip.subsystem.{BaseSubsystem, PBUS}
 import freechips.rocketchip.regmapper._
 import freechips.rocketchip.tilelink.{TLRegisterNode, TLFragmenter}
 import org.chipsalliance.cde.config.Parameters
@@ -143,6 +143,7 @@ class LazyTail(val config: FixedTailParams)(implicit p: Parameters) extends Lazy
 trait CanHavePeripheryFFT extends BaseSubsystem {
   if (!p(FFTEnableKey).isEmpty) {
     // instantiate tail chain
+    val pbus = locateTLBusWrapper(PBUS)
     val domain = pbus.generateSynchronousDomain.suggestName("fft_domain")
     val tailChain = domain { LazyModule(new LazyTail(p(FFTEnableKey).get)) }
     // connect memory interfaces to pbus
