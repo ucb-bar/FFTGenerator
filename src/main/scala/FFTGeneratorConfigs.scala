@@ -6,7 +6,8 @@ package fftgenerator
 
 import org.chipsalliance.cde.config.{Field, Parameters, Config}
 import org.chipsalliance.diplomacy.lazymodule.{LazyModule}
-import freechips.rocketchip.subsystem.{SubsystemInjector, PBUS, SubsystemInjectorKey}
+import freechips.rocketchip.subsystem.{PBUS}
+import testchipip.soc.{SubsystemInjector, SubsystemInjectorKey}
 import freechips.rocketchip.tilelink.{TLFragmenter}
 
 //parameter to enable FFT
